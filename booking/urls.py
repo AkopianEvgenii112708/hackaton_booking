@@ -7,8 +7,12 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework.routers import SimpleRouter
 
+from category.views import CategoryViewSet
+from hotels.views import ProductViewSet
 
 router = SimpleRouter()
+router.register('categories', CategoryViewSet)
+router.register('products', ProductViewSet)
 
 
 schema_view = get_schema_view(
