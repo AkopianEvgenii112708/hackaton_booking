@@ -34,27 +34,23 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(' ')
 # Application definition
 
 INSTALLED_APPS = [
+    # 'likes.apps.LikesConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    #inst_apps
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'django_filters',
     'drf_yasg',
     'ckeditor',
-    'likes.apps.LikesConfig',
-    'tweets.apps.TweetsConfig',
 
     #my_apps
     'hotels',
     'account',
-    'like',
     'rating',
     'review',
     'category',

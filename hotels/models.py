@@ -23,5 +23,46 @@ class Hotel(models.Model):
     stock = models.CharField(choices=STATUS_CHOISES, max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    average_rating = models.FloatField(verbose_name='Average_rating', default=0, )
+
     def __str__(self):
         return self.title
+
+#---------------------------------------
+
+
+class Comment(models.Model):
+    owner = models.ForeignKey(User, related_name='comments',
+                              on_delete=models.CASCADE)
+    post = models.ForeignKey(Hotel, related_name='comments',
+                             on_delete=models.CASCADE)
+    body = models.TextField(max_length=500)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.owner} -> {self.post} -> {self.created_at}'
+
+
+class PostImages(models.Model):
+    title = models.CharField(max_length=100, blank=True)
+    image = models.ImageField(upload_to='images/')
+    post = models.ForeignKey(Hotel, on_delete=models.CASCADE,
+                             related_name='images')
+
+    def generate_name(self):
+        from random import randint
+        return 'image' + str(self.id) + str(randint(100000, 1_000_000))
+
+    def save(self, *args, **kwargs):
+        self.title = self.generate_name()
+        return super(PostImages, self).save(*args, **kwargs)
+
+
+class Like(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked_posts')
+    post = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='likes')
+
+    class Meta:
+        unique_together = ['owner', 'post']
+
+
