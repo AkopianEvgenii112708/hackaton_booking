@@ -9,7 +9,7 @@ User = get_user_model()
 
 
 class Hotel(models.Model):
-    STATUS_CHOISES=(
+    STATUS_CHOICES = (
         ('in_stock', 'Есть свободные номера!'),
         ('out_of_stock', 'Свободных номеров нет!')
     )
@@ -20,7 +20,7 @@ class Hotel(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.RESTRICT)
     image = models.ImageField(upload_to='images')
     price = models.DecimalField(max_digits=12, decimal_places=2)
-    stock = models.CharField(choices=STATUS_CHOISES, max_length=50)
+    stock = models.CharField(choices=STATUS_CHOICES, max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
     average_rating = models.FloatField(verbose_name='Average_rating', default=0, )
@@ -47,5 +47,3 @@ class Like(models.Model):
 
     class Meta:
         unique_together = ['owner', 'post']
-
-

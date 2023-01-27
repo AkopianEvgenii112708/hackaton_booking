@@ -95,20 +95,3 @@ class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
             return [permissions.IsAuthenticated(),
                     IsAuthorOrAdminOrPostOwner()]
         return [permissions.AllowAny()]
-
-
-# class ProductViewSet(ModelViewSet):
-#     queryset = Hotel.objects.all()
-#
-#     def perform_create(self, serializer):
-#         serializer.save(owner=self.request.user)
-#
-#     def get_serializer_class(self):
-#         if self.action == 'list':
-#             return serializers.ProductListSerializer
-#         return serializers.ProductSerializer
-#
-#     def get_permissions(self):
-#         if self.action in ('update', 'partial_update', 'destroy'):
-#             return [permissions.IsAuthenticated(), IsAuthor()]
-#         return [permissions.IsAuthenticatedOrReadOnly()]

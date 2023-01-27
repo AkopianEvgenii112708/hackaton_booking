@@ -64,7 +64,7 @@ class PostCreateSerializer(serializers.ModelSerializer):
         return post
 
 
-    #комменты
+    #комменты --> http://localhost:8000/api/v1/comments/
 class CommentSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.id')
     owner_username = serializers.ReadOnlyField(source='owner.username')
@@ -106,7 +106,7 @@ class LikeSerializer(serializers.ModelSerializer):
 class LikedPostsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
-        fields = ('id', 'post')
+        fields = 'post'
 
     def to_representation(self, instance):
         repr = super().to_representation(instance)
@@ -114,23 +114,3 @@ class LikedPostsSerializer(serializers.ModelSerializer):
         preview = instance.post.preview
         repr['post_preview'] = preview.url
         return repr
-
-
-
-
-# class ProductListSerializer(serializers.ModelSerializer):
-#     owner_email = serializers.ReadOnlyField(source='owner.email')
-#
-#     class Meta:
-#         model = Hotel
-#         fields = ('owner', 'owner_email', 'title')
-#
-#
-# class ProductSerializer(serializers.ModelSerializer):
-#     owner = serializers.ReadOnlyField(source='owner.id')
-#     owner_email = serializers.ReadOnlyField(source='owner.email')
-#     owner_username = serializers.ReadOnlyField(source='owner.username')
-#
-#     class Meta:
-#         model = Hotel
-#         fields = '__all__'
