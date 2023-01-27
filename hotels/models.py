@@ -28,8 +28,6 @@ class Hotel(models.Model):
     def __str__(self):
         return self.title
 
-#---------------------------------------
-
 
 class Comment(models.Model):
     owner = models.ForeignKey(User, related_name='comments',

@@ -3,7 +3,7 @@ from category.models import Category
 from .models import Hotel, Like, Comment
 
 
-    #краткая инфа
+    #краткая инфа --> http://localhost:8000/api/v1/posts/
 class PostListSerializer(serializers.ModelSerializer):
     owner_username = serializers.ReadOnlyField(source='owner.username')
 
@@ -23,7 +23,7 @@ class PostListSerializer(serializers.ModelSerializer):
         return repr
 
 
-    #детальная инфа
+    #детальная инфа --> http://localhost:8000/api/v1/posts/<id>/
 class PostDetailSerializer(serializers.ModelSerializer):
     owner_username = serializers.ReadOnlyField(source='owner.username')
     # category_name = serializers.ReadOnlyField(source='category.name')
@@ -51,13 +51,14 @@ class PostCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Hotel
-        fields = ('title', 'body', 'category', 'preview', 'images')
+        fields = 'id', 'owner', 'title', 'description', 'image', 'category', 'price', \
+            'average_rating', 'stock', 'created_at'
+        # fields = ('title', 'description', 'category', 'price')
 
     def create(self, validated_data):
-        print(validated_data, '-----------------')
         request = self.context.get('request')
         post = Hotel.objects.create(**validated_data)
-        images_data = request.FILES.getlist('images')
+        # images_data = request.FILES.getlist('images')
         # for image in images_data:
         #     PostImages.objects.create(image=image, post=post)
         return post
@@ -84,7 +85,7 @@ class UsersCommentSerializer(serializers.ModelSerializer):
         return repr
 
 
-    #лайки
+    #лайки --> http://localhost:8000/api/v1/posts/<id>/like/
 class LikeSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.id')
     owner_username = serializers.ReadOnlyField(source='owner.username')
