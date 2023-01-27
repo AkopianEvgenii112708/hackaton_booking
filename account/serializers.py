@@ -29,6 +29,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         return user
 
+
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
     default_error_messages = {'bad_token': _('Token is invalid or expired!')}

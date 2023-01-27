@@ -13,6 +13,8 @@ from django.contrib.auth import get_user_model
 from .send_mail import send_confirmation_email
 
 User = get_user_model()
+
+
 class RegistrationView(APIView):
     permission_classes = (permissions.AllowAny,)
 
@@ -28,6 +30,7 @@ class RegistrationView(APIView):
                                      'data': serializer.data}, status=201)
             return Response(serializer.data, status=201)
         return Response('Bad request', status=404)
+
 
 class ActivationView(APIView):
     permission_classes = (permissions.AllowAny,)

@@ -13,6 +13,8 @@ import os
 from datetime import timedelta
 from pathlib import Path
 from decouple import config
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,14 +34,13 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(' ')
 # Application definition
 
 INSTALLED_APPS = [
+    # 'likes.apps.LikesConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    #inst_apps
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
@@ -50,9 +51,7 @@ INSTALLED_APPS = [
     #my_apps
     'hotels',
     'account',
-    'like',
     'rating',
-    'review',
     'category',
 ]
 
