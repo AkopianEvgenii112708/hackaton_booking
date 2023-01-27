@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'hotels',
     'account',
     'rating',
-    'review',
     'category',
 ]
 

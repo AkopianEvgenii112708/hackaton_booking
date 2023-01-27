@@ -1,36 +1,14 @@
-from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions, generics, response
 from .models import Hotel
 from . import serializers
-from .permissions import IsAuthor, IsAuthorOrAdmin
-
+from .permissions import IsAuthor, IsAuthorOrAdmin, IsAuthorOrAdminOrPostOwner
 
 from rest_framework.response import Response
-from .models import Like
+from .models import Like, Comment
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
-
-
-class ProductViewSet(ModelViewSet):
-    queryset = Hotel.objects.all()
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
-
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return serializers.ProductListSerializer
-        return serializers.ProductSerializer
-
-    def get_permissions(self):
-        if self.action in ('update', 'partial_update', 'destroy'):
-            return [permissions.IsAuthenticated(), IsAuthor()]
-        return [permissions.IsAuthenticatedOrReadOnly()]
-
-
-#''''''''''''''''''''''''''''''''
 
 
 class PostViewSet(ModelViewSet):
@@ -97,8 +75,40 @@ class LikeDeleteView(generics.DestroyAPIView):
     permission_classes = (permissions.IsAuthenticated, IsAuthor)
 
 
+class CommentCreateView(generics.CreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = serializers.CommentSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
+class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = serializers.CommentSerializer
+
+    def get_permissions(self):
+        if self.request.method in ('PUT', 'PATCH'):
+            return [permissions.IsAuthenticated(), IsAuthor()]
+        elif self.request.method == 'DELETE':
+            return [permissions.IsAuthenticated(),
+                    IsAuthorOrAdminOrPostOwner()]
+        return [permissions.AllowAny()]
 
 
-
+# class ProductViewSet(ModelViewSet):
+#     queryset = Hotel.objects.all()
+#
+#     def perform_create(self, serializer):
+#         serializer.save(owner=self.request.user)
+#
+#     def get_serializer_class(self):
+#         if self.action == 'list':
+#             return serializers.ProductListSerializer
+#         return serializers.ProductSerializer
+#
+#     def get_permissions(self):
+#         if self.action in ('update', 'partial_update', 'destroy'):
+#             return [permissions.IsAuthenticated(), IsAuthor()]
+#         return [permissions.IsAuthenticatedOrReadOnly()]

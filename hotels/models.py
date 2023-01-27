@@ -43,21 +43,6 @@ class Comment(models.Model):
         return f'{self.owner} -> {self.post} -> {self.created_at}'
 
 
-class PostImages(models.Model):
-    title = models.CharField(max_length=100, blank=True)
-    image = models.ImageField(upload_to='images/')
-    post = models.ForeignKey(Hotel, on_delete=models.CASCADE,
-                             related_name='images')
-
-    def generate_name(self):
-        from random import randint
-        return 'image' + str(self.id) + str(randint(100000, 1_000_000))
-
-    def save(self, *args, **kwargs):
-        self.title = self.generate_name()
-        return super(PostImages, self).save(*args, **kwargs)
-
-
 class Like(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked_posts')
     post = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='likes')
